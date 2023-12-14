@@ -1,6 +1,6 @@
 {
   "name": "express-autoload-routes",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -20,9 +20,22 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "express",
+    "router",
+    "routes",
+    "automatic",
+    "dynamic",
+    "autoload",
+    "async",
+    "middlewares"
+  ],
+  "author": "Fritzler Ilan Emanuel",
+  "contributors": [{
+    "name": "Damian De Lio",
+    "url": "https://github.com/damiandelio"
+  }],
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.4",
