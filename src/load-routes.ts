@@ -7,7 +7,6 @@ import {
 } from "express";
 import path, { sep } from "path";
 import fs from "fs";
-import _ from "lodash";
 
 export type MiddlewareType =
   | RequestHandler[]
