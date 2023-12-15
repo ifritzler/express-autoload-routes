@@ -108,7 +108,7 @@ async function walkFiles(currentDirectory, depth = 0) {
     const before = Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares : module2.metadata?.middlewares?.before ?? [];
     const after = !Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares?.after ?? [] : [];
     const handler = /* @__PURE__ */ __name(async (req, res, next) => {
-      module2.default(req, res, next);
+      await module2.default(req, res, next);
       next();
     }, "handler");
     if (groupFiles.metadata.length > 0) {

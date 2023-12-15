@@ -137,7 +137,7 @@ async function walkFiles(
       ? module.metadata?.middlewares?.after ?? []
       : [];
     const handler = async (req: Request, res: Response, next: NextFunction) => {
-      module.default(req, res, next);
+      await module.default(req, res, next)
       next();
     };
 
