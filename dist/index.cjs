@@ -39,6 +39,8 @@ module.exports = __toCommonJS(express_autoload_routes_exports);
 var import_express = require("express");
 var import_path = __toESM(require("path"), 1);
 var import_fs = __toESM(require("fs"), 1);
+var import_chalk = __toESM(require("chalk"), 1);
+var debugMode = process.env.AUTOLOAD_TRACER ?? false;
 var fileProtocol = "file:///";
 async function loadRoutes(routesPath) {
   try {
@@ -92,8 +94,28 @@ async function walkFiles(currentDirectory, depth = 0) {
       import_path.default.join(currentDirectory, routy),
       depth + 1
     );
-    const before = Array.isArray(metadata?.middlewares) ? metadata?.middlewares : metadata?.middlewares?.before ?? [];
-    const after = !Array.isArray(metadata?.middlewares) ? metadata?.middlewares?.after ?? [] : [];
+    let before = Array.isArray(metadata?.middlewares) ? metadata?.middlewares : metadata?.middlewares?.before ?? [];
+    let after = !Array.isArray(metadata?.middlewares) ? metadata?.middlewares?.after ?? [] : [];
+    if (debugMode) {
+      before = before.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            import_path.default.join(currentDirectory, "metadata")
+          );
+          return middy(req, res, next);
+        };
+      });
+      after = after.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            import_path.default.join(currentDirectory, "metadata")
+          );
+          return middy(req, res, next);
+        };
+      });
+    }
     router.use(
       `${depth === 0 ? "/" : "/" + parentRoute}`,
       before,
@@ -105,8 +127,28 @@ async function walkFiles(currentDirectory, depth = 0) {
     const section = currentDirectory.split(import_path.sep).slice(-1).join("").replace(/\[([^\]]+)\]/gi, ":$1");
     const module2 = await import(fileProtocol + import_path.default.normalize(import_path.default.join(currentDirectory, fileMethod)));
     const method = getMethodName(fileMethod);
-    const before = Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares : module2.metadata?.middlewares?.before ?? [];
-    const after = !Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares?.after ?? [] : [];
+    let before = Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares : module2.metadata?.middlewares?.before ?? [];
+    let after = !Array.isArray(module2.metadata?.middlewares) ? module2.metadata?.middlewares?.after ?? [] : [];
+    if (debugMode) {
+      before = before.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            import_path.default.join(currentDirectory, fileMethod)
+          );
+          return middy(req, res, next);
+        };
+      });
+      after = after.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            import_path.default.join(currentDirectory, fileMethod)
+          );
+          return middy(req, res, next);
+        };
+      });
+    }
     const handler = /* @__PURE__ */ __name(async (req, res, next) => {
       await module2.default(req, res, next);
       next();

@@ -7,6 +7,8 @@ import {
 } from "express";
 import path, { sep } from "path";
 import fs from "fs";
+import chalk from "chalk";
+var debugMode = process.env.AUTOLOAD_TRACER ?? false;
 var fileProtocol = "file:///";
 async function loadRoutes(routesPath) {
   try {
@@ -60,8 +62,28 @@ async function walkFiles(currentDirectory, depth = 0) {
       path.join(currentDirectory, routy),
       depth + 1
     );
-    const before = Array.isArray(metadata?.middlewares) ? metadata?.middlewares : metadata?.middlewares?.before ?? [];
-    const after = !Array.isArray(metadata?.middlewares) ? metadata?.middlewares?.after ?? [] : [];
+    let before = Array.isArray(metadata?.middlewares) ? metadata?.middlewares : metadata?.middlewares?.before ?? [];
+    let after = !Array.isArray(metadata?.middlewares) ? metadata?.middlewares?.after ?? [] : [];
+    if (debugMode) {
+      before = before.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            path.join(currentDirectory, "metadata")
+          );
+          return middy(req, res, next);
+        };
+      });
+      after = after.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            path.join(currentDirectory, "metadata")
+          );
+          return middy(req, res, next);
+        };
+      });
+    }
     router.use(
       `${depth === 0 ? "/" : "/" + parentRoute}`,
       before,
@@ -73,8 +95,28 @@ async function walkFiles(currentDirectory, depth = 0) {
     const section = currentDirectory.split(sep).slice(-1).join("").replace(/\[([^\]]+)\]/gi, ":$1");
     const module = await import(fileProtocol + path.normalize(path.join(currentDirectory, fileMethod)));
     const method = getMethodName(fileMethod);
-    const before = Array.isArray(module.metadata?.middlewares) ? module.metadata?.middlewares : module.metadata?.middlewares?.before ?? [];
-    const after = !Array.isArray(module.metadata?.middlewares) ? module.metadata?.middlewares?.after ?? [] : [];
+    let before = Array.isArray(module.metadata?.middlewares) ? module.metadata?.middlewares : module.metadata?.middlewares?.before ?? [];
+    let after = !Array.isArray(module.metadata?.middlewares) ? module.metadata?.middlewares?.after ?? [] : [];
+    if (debugMode) {
+      before = before.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            path.join(currentDirectory, fileMethod)
+          );
+          return middy(req, res, next);
+        };
+      });
+      after = after.map((middy) => {
+        return async (req, res, next) => {
+          console.log(
+            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
+            path.join(currentDirectory, fileMethod)
+          );
+          return middy(req, res, next);
+        };
+      });
+    }
     const handler = /* @__PURE__ */ __name(async (req, res, next) => {
       await module.default(req, res, next);
       next();
