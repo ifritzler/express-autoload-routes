@@ -118,8 +118,10 @@ async function walkFiles(
       before = before.map((middy) => {
         return async (req: Request, res: Response, next: NextFunction) => {
           console.log(
-            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            path.join(currentDirectory, "metadata")
+            chalk.bold.hex("#06c967")("MIDDLEWARE:"),
+            chalk.bold.hex("#c90647")(middy.name), 
+            chalk.bold.hex("#06c967")("EXECUTED ON:"),
+            path.join(currentDirectory, "metadata").replace(process.cwd(), '.').replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -127,8 +129,10 @@ async function walkFiles(
       after = after.map((middy) => {
         return async (req: Request, res: Response, next: NextFunction) => {
           console.log(
-            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            path.join(currentDirectory, "metadata")
+            chalk.bold.hex("#06c967")("MIDDLEWARE:"),
+            chalk.bold.hex("#c90647")(middy.name), 
+            chalk.bold.hex("#06c967")("EXECUTED ON:"),
+            path.join(currentDirectory, "metadata").replace(process.cwd(), '.').replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -165,8 +169,10 @@ async function walkFiles(
       before = before.map((middy) => {
         return async (req: Request, res: Response, next: NextFunction) => {
           console.log(
-            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            path.join(currentDirectory, fileMethod)
+            chalk.bold.hex("#06c967")("MIDDLEWARE:"),
+            chalk.bold.hex("#c90647")(middy.name), 
+            chalk.bold.hex("#06c967")("EXECUTED ON:"),
+            path.join(currentDirectory, fileMethod).replace(process.cwd(), '.').replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -174,8 +180,10 @@ async function walkFiles(
       after = after.map((middy) => {
         return async (req: Request, res: Response, next: NextFunction) => {
           console.log(
-            chalk.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            path.join(currentDirectory, fileMethod)
+            chalk.bold.hex("#06c967")("MIDDLEWARE:"),
+            chalk.bold.hex("#c90647")(middy.name), 
+            chalk.bold.hex("#06c967")("EXECUTED ON:"),
+            path.join(currentDirectory, fileMethod).replace(process.cwd(), '.').replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };

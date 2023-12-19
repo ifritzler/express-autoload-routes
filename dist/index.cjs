@@ -100,8 +100,10 @@ async function walkFiles(currentDirectory, depth = 0) {
       before = before.map((middy) => {
         return async (req, res, next) => {
           console.log(
-            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            import_path.default.join(currentDirectory, "metadata")
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE:"),
+            import_chalk.default.bold.hex("#c90647")(middy.name),
+            import_chalk.default.bold.hex("#06c967")("EXECUTED ON:"),
+            import_path.default.join(currentDirectory, "metadata").replace(process.cwd(), ".").replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -109,8 +111,10 @@ async function walkFiles(currentDirectory, depth = 0) {
       after = after.map((middy) => {
         return async (req, res, next) => {
           console.log(
-            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            import_path.default.join(currentDirectory, "metadata")
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE:"),
+            import_chalk.default.bold.hex("#c90647")(middy.name),
+            import_chalk.default.bold.hex("#06c967")("EXECUTED ON:"),
+            import_path.default.join(currentDirectory, "metadata").replace(process.cwd(), ".").replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -133,8 +137,10 @@ async function walkFiles(currentDirectory, depth = 0) {
       before = before.map((middy) => {
         return async (req, res, next) => {
           console.log(
-            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            import_path.default.join(currentDirectory, fileMethod)
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE:"),
+            import_chalk.default.bold.hex("#c90647")(middy.name),
+            import_chalk.default.bold.hex("#06c967")("EXECUTED ON:"),
+            import_path.default.join(currentDirectory, fileMethod).replace(process.cwd(), ".").replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
@@ -142,8 +148,10 @@ async function walkFiles(currentDirectory, depth = 0) {
       after = after.map((middy) => {
         return async (req, res, next) => {
           console.log(
-            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE RUNNING ON:"),
-            import_path.default.join(currentDirectory, fileMethod)
+            import_chalk.default.bold.hex("#06c967")("MIDDLEWARE:"),
+            import_chalk.default.bold.hex("#c90647")(middy.name),
+            import_chalk.default.bold.hex("#06c967")("EXECUTED ON:"),
+            import_path.default.join(currentDirectory, fileMethod).replace(process.cwd(), ".").replace(/\\([^\\]+\\)/g, "\\")
           );
           return middy(req, res, next);
         };
